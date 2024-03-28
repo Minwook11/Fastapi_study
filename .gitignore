@@ -247,3 +247,6 @@ tags
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,vim,visualstudiocode,python
+
+alembic.ini
+migrations
