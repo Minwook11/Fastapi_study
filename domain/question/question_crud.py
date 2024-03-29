@@ -17,6 +17,7 @@ def get_question_list(db: Session, skip: int = 0, limit: int = 10):
     
     return total, question_list
 
+
 def get_question(db: Session, question_id: int):
     question = db.query(
         Question
@@ -25,6 +26,7 @@ def get_question(db: Session, question_id: int):
     )
     
     return question
+
 
 def create_question(db: Session, question_create: QuestionCreate):
     db_question = Question(
