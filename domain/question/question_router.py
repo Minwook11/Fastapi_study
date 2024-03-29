@@ -1,6 +1,7 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
 
-from database import Session
+from database import get_db
 from models import Question
 
 
@@ -9,11 +10,11 @@ router = APIRouter(
 )
 
 @router.get("/list")
-async def question_list():
-    db = Session()
-    
-    _question_list = db.query(Question).order_by(Question.create_date.desc()).all()
-    
-    db.close()
+async def question_list(db: Session = Depends(get_db)):
+    _question_list = db.query(
+        Question
+    ).order_by(
+        Question.create_date.desc()
+    ).all()
     
     return _question_list
