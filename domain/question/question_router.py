@@ -11,7 +11,7 @@ router = APIRouter(
 )
 
 @router.get("/list", response_model=list[question_schema.Question])
-async def question_list(db: Session = Depends(get_db)):
+def question_list(db: Session = Depends(get_db)):
     _question_list = db.query(
         Question
     ).order_by(
