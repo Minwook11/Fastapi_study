@@ -19,3 +19,9 @@ class UserCreate(BaseModel):
         if "password1" in info.data and v != info.data["password1"]:
             raise ValueError("PASSWORD_NOT_MATCH")
         return v
+    
+    
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+    username: str
