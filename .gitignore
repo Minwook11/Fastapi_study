@@ -249,4 +249,4 @@ tags
 # End of https://www.toptal.com/developers/gitignore/api/macos,vim,visualstudiocode,python
 
 alembic.ini
-migration
+migrations
