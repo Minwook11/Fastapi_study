@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from starlette import status
 
@@ -32,3 +32,24 @@ def question_detail(question_id: int, db: Session = Depends(get_db)):
 @router.post("/create", status_code=status.HTTP_204_NO_CONTENT)
 def question_create(_question_create: question_schema.QuestionCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     question_crud.create_question(db=db, question_create=_question_create, user=current_user)
+
+
+@router.put("/update", status_code=status.HTTP_204_NO_CONTENT)
+def question_update(_question_update: question_schema.QuestionUpdate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user):
+    db_question = question_crud.get_question(db, question_id=_question_update.question_id)
+    if not db_question:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Not found data")
+    if currnet_user.id != db_question.id:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="invalid authority")
+    question_crud.update_question(db=db, db_question=db_question, question_update=question_update)
+
+
+
+@router.delete("/delete", status_code=status.HTTP_204_NO_CONTENT)
+def question_delete(_question_delete: question_scheme.QuestionDelete, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    db_question = question_crud.get_question(db, question_id=_question_delete.question_id)
+    if not db_question:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="not found data")
+    if currnet_user.id != db_question.id:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="invalid authority")
+    question_crud.delete_question(db=db, db_question=db_question)
