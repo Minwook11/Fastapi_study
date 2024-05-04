@@ -48,3 +48,12 @@ def answer_delete(_answer_delete: answer_scheme.AnswerDelete, db: Session = Depe
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="NO_AUTH")
 
     answer_crud.delete_answer(db=db, db_answer=db_answer)
+
+
+@router("/vote", status_code=status.HTTP_204_NO_CONTENT)
+def answer_vote(_answer_vote: answer_schema.AnswerVote, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    db_answer = answer_crud.get_answer(db, answer_id=answer_vote.answer_id)
+    if not db_answer:
+        raise HTTPException(status_code.status.HTTP_400_BAD_REQUEST, detail="ANSWER_FOT_FOUND")
+
+    answer_crud.vote_answer(db, db_answer=db_answer, db_user=current_user)
