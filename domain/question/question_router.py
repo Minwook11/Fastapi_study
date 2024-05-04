@@ -53,3 +53,11 @@ def question_delete(_question_delete: question_scheme.QuestionDelete, db: Sessio
     if currnet_user.id != db_question.id:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="invalid authority")
     question_crud.delete_question(db=db, db_question=db_question)
+
+
+@router.post("/vote", status_code=status.HTTP_204_NO_CONTENT)
+def question_vote(_question_vote: question_schema.QuestionVote, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    db_question = question_curd.get_question(db, question_id=_question_vote.question_id)
+    if not db_question:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="NOT_FOUND_DATA")
+    question_crud.vote_question(db, db_question=db_question, db_user=current_user)
